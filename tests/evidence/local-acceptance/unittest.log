@@ -1,0 +1,36 @@
+test_actual_child_timeout_kills_and_reaps (test_monitor_agent.AgentTests.test_actual_child_timeout_kills_and_reaps) ... ok
+test_configuration_rejects_unsafe_or_invalid_values (test_monitor_agent.AgentTests.test_configuration_rejects_unsafe_or_invalid_values) ... ok
+test_cpu_delta_ignores_guest_double_count (test_monitor_agent.AgentTests.test_cpu_delta_ignores_guest_double_count) ... ok
+test_dns_failure_and_dns_timeout (test_monitor_agent.AgentTests.test_dns_failure_and_dns_timeout) ... ok
+test_errno_classification (test_monitor_agent.AgentTests.test_errno_classification) ... ok
+test_full_disk_write_is_reported_without_crash (test_monitor_agent.AgentTests.test_full_disk_write_is_reported_without_crash) ... ok
+test_heartbeat_disabled_emits_nothing (test_monitor_agent.AgentTests.test_heartbeat_disabled_emits_nothing) ... ok
+test_heartbeat_failed_cycle_suppression_and_recovery (test_monitor_agent.AgentTests.test_heartbeat_failed_cycle_suppression_and_recovery) ... ok
+test_heartbeat_period_schema_and_monotonic_duration (test_monitor_agent.AgentTests.test_heartbeat_period_schema_and_monotonic_duration) ... ok
+test_heartbeat_setting_defaults_and_validation (test_monitor_agent.AgentTests.test_heartbeat_setting_defaults_and_validation) ... ok
+test_heartbeat_uses_main_writer_and_survives_rotation (test_monitor_agent.AgentTests.test_heartbeat_uses_main_writer_and_survives_rotation) ... ok
+test_ipv6_numeric_address_does_not_resolve (test_monitor_agent.AgentTests.test_ipv6_numeric_address_does_not_resolve) ... ok
+test_jsonl_append_rotation_and_symlink (test_monitor_agent.AgentTests.test_jsonl_append_rotation_and_symlink) ... ok
+test_main_heartbeat_failure_affects_once_exit_status (test_monitor_agent.AgentTests.test_main_heartbeat_failure_affects_once_exit_status) ... ok
+test_main_heartbeat_tracks_completed_cycle_not_sleep (test_monitor_agent.AgentTests.test_main_heartbeat_tracks_completed_cycle_not_sleep) ... ok
+test_main_stopping_cycle_does_not_emit_heartbeat (test_monitor_agent.AgentTests.test_main_stopping_cycle_does_not_emit_heartbeat) ... ok
+test_memory_available_and_fallback (test_monitor_agent.AgentTests.test_memory_available_and_fallback) ... ok
+test_missing_proc_does_not_crash (test_monitor_agent.AgentTests.test_missing_proc_does_not_crash) ... ok
+test_multi_address_budget_not_per_address_timeout (test_monitor_agent.AgentTests.test_multi_address_budget_not_per_address_timeout) ... ok
+test_once_cli_real_process_and_log_contract (test_monitor_agent.AgentTests.test_once_cli_real_process_and_log_contract) ... ok
+test_once_cli_with_heartbeat_evidence (test_monitor_agent.AgentTests.test_once_cli_with_heartbeat_evidence) ... ok
+test_real_loopback_success_and_refused (test_monitor_agent.AgentTests.test_real_loopback_success_and_refused) ... ok
+test_resource_level_priority_and_configurable_thresholds (test_monitor_agent.AgentTests.test_resource_level_priority_and_configurable_thresholds) ... ok
+test_resource_schema_and_threshold (test_monitor_agent.AgentTests.test_resource_schema_and_threshold) ... ok
+test_resource_worker_timeout_is_unknown_not_zero (test_monitor_agent.AgentTests.test_resource_worker_timeout_is_unknown_not_zero) ... ok
+test_shutdown_interrupts_interval_wait (test_monitor_agent.AgentTests.test_shutdown_interrupts_interval_wait) ... ok
+test_sigterm_stops_real_daemon (test_monitor_agent.AgentTests.test_sigterm_stops_real_daemon) ... ok
+test_tcp_failures_network_schema_and_no_exception_details (test_monitor_agent.AgentTests.test_tcp_failures_network_schema_and_no_exception_details) ... ok
+test_version_added_without_changing_existing_values (test_monitor_agent.AgentTests.test_version_added_without_changing_existing_values) ... ok
+test_zombie_name_with_brackets (test_monitor_agent.AgentTests.test_zombie_name_with_brackets) ... ok
+test_zombie_permissions_report_unknown (test_monitor_agent.AgentTests.test_zombie_permissions_report_unknown) ... ok
+
+----------------------------------------------------------------------
+Ran 31 tests in 1.141s
+
+OK

@@ -1,0 +1,44 @@
+[
+  {
+    "file": "tests/evidence/default-targets.jsonl",
+    "exit_code": 0,
+    "rows": 5,
+    "output": "行數=5 錯誤=0"
+  },
+  {
+    "file": "tests/evidence/local-acceptance/once-heartbeat.jsonl",
+    "exit_code": 0,
+    "rows": 6,
+    "output": "行數=6 錯誤=0"
+  },
+  {
+    "file": "tests/evidence/local-acceptance/once-loopback.jsonl",
+    "exit_code": 0,
+    "rows": 5,
+    "output": "行數=5 錯誤=0"
+  },
+  {
+    "file": "tests/evidence/once-heartbeat.jsonl",
+    "exit_code": 0,
+    "rows": 6,
+    "output": "行數=6 錯誤=0"
+  },
+  {
+    "file": "tests/evidence/once-loopback.jsonl",
+    "exit_code": 0,
+    "rows": 5,
+    "output": "行數=5 錯誤=0"
+  },
+  {
+    "file": "tests/evidence/quick-verify-demo.jsonl",
+    "exit_code": 0,
+    "rows": 5,
+    "output": "行數=5 錯誤=0"
+  },
+  {
+    "file": "tests/evidence/worst-case-failures.jsonl",
+    "exit_code": 0,
+    "rows": 5,
+    "output": "行數=5 錯誤=0"
+  }
+]

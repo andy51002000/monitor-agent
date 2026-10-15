@@ -1,0 +1,5 @@
+{"v":1,"ts":"2026-10-15T05:57:24.622+00:00","host":"test-host","event":"resource","cpu_pct":null,"mem_pct":60.0,"zombie_count":1,"load1":0.5,"disk_pct":51.44,"level":"warn"}
+{"v":1,"ts":"2026-10-15T05:57:24.623+00:00","host":"test-host","event":"network","target":"internal","dest":"127.0.0.1:56635","fqdn":"","result":"ok","failure_type":"ok","latency_ms":0.533,"detail":"tcp_connected","level":"ok"}
+{"v":1,"ts":"2026-10-15T05:57:24.667+00:00","host":"test-host","event":"network","target":"internal","dest":"localhost:56635","fqdn":"localhost","result":"ok","failure_type":"ok","latency_ms":42.14,"detail":"tcp_connected","level":"ok"}
+{"v":1,"ts":"2026-10-15T05:57:24.667+00:00","host":"test-host","event":"network","target":"external","dest":"127.0.0.1:56635","fqdn":"","result":"ok","failure_type":"ok","latency_ms":0.196,"detail":"tcp_connected","level":"ok"}
+{"v":1,"ts":"2026-10-15T05:57:24.715+00:00","host":"test-host","event":"network","target":"external","dest":"localhost:56635","fqdn":"localhost","result":"ok","failure_type":"ok","latency_ms":46.476,"detail":"tcp_connected","level":"ok"}

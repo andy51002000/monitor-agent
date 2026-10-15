@@ -1,0 +1,81 @@
+{
+  "date": "2026-10-15",
+  "scope": "public GitHub source and local regression; doc/ and docs/ excluded",
+  "submission_checks_passed": true,
+  "agent_version": "1.1.0",
+  "schema_version": 1,
+  "local_tests": {
+    "count": 31,
+    "passed": 31,
+    "failed": 0,
+    "platform": "macOS",
+    "evidence": "unittest.log"
+  },
+  "configuration_and_syntax": {
+    "unittest": {
+      "exit_code": 0,
+      "passed": true
+    },
+    "check-config": {
+      "exit_code": 0,
+      "passed": true
+    },
+    "shell-syntax": {
+      "exit_code": 0,
+      "passed": true
+    },
+    "python-syntax": {
+      "passed": true,
+      "files": 3
+    }
+  },
+  "jsonl_validation": {
+    "files": 7,
+    "errors": 0,
+    "historical_anonymous": 5,
+    "fresh_local": 2,
+    "evidence": "schema-results.json"
+  },
+  "documentation": {
+    "relative_links": "passed",
+    "excluded_directories": [
+      "doc",
+      "docs"
+    ],
+    "readme_shell_blocks_syntax_checked": 5,
+    "full_submission_ac_table": "not part of this public repository"
+  },
+  "privacy": {
+    "original_files_privately_backed_up": 25,
+    "backup_hashes_verified": true,
+    "directory_mode": "0700",
+    "file_mode": "0600",
+    "known_original_identifier_matches": 0,
+    "common_credential_pattern_matches": 0,
+    "bytecode_files": 0,
+    "original_evidence_measurements_and_timestamps": "preserved"
+  },
+  "linux_saved_evidence": {
+    "file": "../linux-acceptance-2026-10-15.log",
+    "identifier_data": "anonymized derivative",
+    "rerun_in_this_revision": false,
+    "historical_claims_excluded": [
+      "three consecutive reboots",
+      "8-second startup",
+      "340-second observation"
+    ]
+  },
+  "remaining_environment_validation": [
+    "real central endpoint and service port",
+    "Linux high/low resource load and cross-checks",
+    "all network fault injections",
+    "crash/OOM restart and backoff",
+    "both uninstall modes",
+    "24-hour resource footprint",
+    "scheduled logrotate",
+    "real full disk",
+    "50-server scale"
+  ],
+  "remote_actions_performed": false,
+  "external_credential_files_read": false
+}

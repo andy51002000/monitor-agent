@@ -1,0 +1,5 @@
+{"v":1,"ts":"2026-10-15T05:13:41.335+00:00","host":"demo-host","event":"resource","cpu_pct":null,"mem_pct":null,"zombie_count":null,"load1":null,"disk_pct":50.95,"level":"error"}
+{"v":1,"ts":"2026-10-15T05:13:41.391+00:00","host":"demo-host","event":"network","target":"internal","dest":"192.168.1.254:443","fqdn":"","result":"ok","failure_type":"ok","latency_ms":54.523,"detail":"tcp_connected","level":"ok"}
+{"v":1,"ts":"2026-10-15T05:13:43.006+00:00","host":"demo-host","event":"network","target":"internal","dest":"www.graid.com:443","fqdn":"www.graid.com","result":"ok","failure_type":"ok","latency_ms":1615.141,"detail":"tcp_connected","level":"ok"}
+{"v":1,"ts":"2026-10-15T05:13:43.020+00:00","host":"demo-host","event":"network","target":"external","dest":"1.1.1.1:443","fqdn":"","result":"ok","failure_type":"ok","latency_ms":12.4,"detail":"tcp_connected","level":"ok"}
+{"v":1,"ts":"2026-10-15T05:13:43.511+00:00","host":"demo-host","event":"network","target":"external","dest":"example.com:443","fqdn":"example.com","result":"ok","failure_type":"ok","latency_ms":488.132,"detail":"tcp_connected","level":"ok"}

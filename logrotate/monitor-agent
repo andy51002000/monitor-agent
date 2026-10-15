@@ -1,0 +1,12 @@
+/var/log/monitor-agent/agent.jsonl {
+    daily
+    maxsize 10M
+    rotate 7
+    maxage 14
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 0640 monitor-agent monitor-agent
+    su monitor-agent monitor-agent
+}

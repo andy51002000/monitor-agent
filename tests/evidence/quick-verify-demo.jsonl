@@ -1,0 +1,5 @@
+{"v":1,"ts":"2026-10-06T12:09:20.400+00:00","host":"demo-host","event":"resource","cpu_pct":null,"mem_pct":null,"zombie_count":null,"load1":null,"disk_pct":96.66,"level":"error"}
+{"v":1,"ts":"2026-10-06T12:09:20.401+00:00","host":"demo-host","event":"network","target":"internal","dest":"127.0.0.1:1","fqdn":"","result":"fail","failure_type":"tcp_connection_refused","latency_ms":0.366,"detail":"tcp_failed;attempts=tcp_connection_refused","level":"error"}
+{"v":1,"ts":"2026-10-06T12:09:20.447+00:00","host":"demo-host","event":"network","target":"internal","dest":"no-such-host.invalid:1","fqdn":"no-such-host.invalid","result":"fail","failure_type":"dns_resolution_error","latency_ms":45.18,"detail":"dns_failed","level":"error"}
+{"v":1,"ts":"2026-10-06T12:09:20.448+00:00","host":"demo-host","event":"network","target":"external","dest":"127.0.0.1:1","fqdn":"","result":"fail","failure_type":"tcp_connection_refused","latency_ms":0.267,"detail":"tcp_failed;attempts=tcp_connection_refused","level":"error"}
+{"v":1,"ts":"2026-10-06T12:09:20.449+00:00","host":"demo-host","event":"heartbeat","pid":54490,"uptime_s":0.097,"version":"1.1.0","cycle_ms":97.071,"level":"ok"}

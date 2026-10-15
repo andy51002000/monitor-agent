@@ -1,0 +1,242 @@
+ANONYMIZED EVIDENCE COPY
+Identifiers (hosts, addresses, user paths, MACs, boot IDs) are pseudonyms; measurements and event timestamps are retained.
+The unchanged original is held in a private backup outside this submission.
+
+##### EVIDENCE PASS host=lab-agent-1 boot=<boot-id-1> 2026-10-15T05:23:33+00:00 #####
+--- [1] 環境 ---
+os=Debian GNU/Linux 12 (bookworm)
+kernel=6.1.0-53-cloud-amd64
+systemd=systemd 252 (252.39-1~deb12u2)
+python=Python 3.11.2
+machine=2 vCPU / 969 MB
+boot_time=2026-10-15 05:23:15
+--- [2] 開機啟動（本次開機，無人為介入） ---
+is-enabled=enabled
+is-active=active
+MainPID=430
+NRestarts=0
+ExecMainStartTimestamp=Thu 2026-10-15 05:23:26 UTC
+ActiveEnterTimestamp=Thu 2026-10-15 05:23:26 UTC
+journalctl -b -u monitor-agent.service:
+Oct 15 05:23:26 lab-agent-1 systemd[1]: Started monitor-agent.service - Lightweight Linux resource and TCP monitoring agent.
+--- [3] 已安裝設定（/etc）內容 ---
+276208b5cc82863b88d268978865c89dfb2546fde7e3a34cf7b4e36a53681fae  /etc/monitor-agent/monitor-agent.conf
+[internal]
+dest = 198.51.100.11
+fqdn = www.graid.com
+port = 443
+
+[external]
+dest = 1.1.1.1
+fqdn = example.com
+port = 443
+
+--- [4] 升級陷阱實測：把修正後設定放入來源樹，重跑 install.sh ---
+來源樹新設定（題目正確值）:
+[internal]
+dest = 192.168.1.254
+fqdn = www.graid.com
+port = 443
+2026-10-15T05:23:33.589111+00:00 lab-agent-1 google_guest_agent[701]: Interface(lo) - State: {Index:1 MTU:65536 Name:lo HardwareAddr: Flags:up|loopback|running}, Addrs: [127.0.0.1/8 ::1/128]
+2026-10-15T05:23:33.589254+00:00 lab-agent-1 google_guest_agent[701]: Interface(ens4) - State: {Index:2 MTU:1460 Name:ens4 HardwareAddr:42:01:0a:8c:00:15 Flags:up|broadcast|multicast|running}, Addrs: [198.51.100.10/32 2001:db8::10/64]
+2026-10-15T05:23:33.593205+00:00 lab-agent-1 google_guest_agent[701]: Local Routes: local 198.51.100.10 dev ens4 proto kernel scope host src 198.51.100.10 #012local 127.0.0.0/8 dev lo proto kernel scope host src 127.0.0.1 #012local 127.0.0.1 dev lo proto kernel scope host src 127.0.0.1 #012broadcast 127.255.255.255 dev lo proto kernel scope link src 127.0.0.1
+2026-10-15T05:23:33.834246+00:00 lab-agent-1 systemd[1]: Reloading.
+2026-10-15T05:23:34.177444+00:00 lab-agent-1 systemd[1]: Reloading.
+         Stopping monitor-agent.ser…source and TCP monitoring agent...
+
+2026-10-15T05:23:34.507617+00:00 lab-agent-1 systemd[1]: Stopping monitor-agent.service - Lightweight Linux resource and TCP monitoring agent...
+2026-10-15T05:23:34.521071+00:00 lab-agent-1 systemd[1]: monitor-agent.service: Deactivated successfully.
+[  OK  ] Stopped monitor-agent.serv…resource and TCP monitoring agent.
+
+2026-10-15T05:23:34.521885+00:00 lab-agent-1 systemd[1]: Stopped monitor-agent.service - Lightweight Linux resource and TCP monitoring agent.
+[  OK  ] Started monitor-agent.serv…resource and TCP monitoring agent.
+
+2026-10-15T05:23:34.543907+00:00 lab-agent-1 systemd[1]: Started monitor-agent.service - Lightweight Linux resource and TCP monitoring agent.
+2026-10-15T05:23:35.328063+00:00 lab-agent-1 mwlid_extension[702]: Cloud Logging Client Error: rpc error: code = Unauthenticated desc = transport: per-RPC creds failed due to error: credentials: cannot fetch token: metadata: GCE metadata "instance/service-accounts/default/token?scopes=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Flogging.write" not defined
+2026-10-15T05:23:36.040693+00:00 lab-agent-1 google_guest_agent_manager[401]: Cloud Logging Client Error: rpc error: code = Unauthenticated desc = transport: per-RPC creds failed due to error: credentials: cannot fetch token: metadata: GCE metadata "instance/service-accounts/default/token?scopes=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Flogging.write" not defined
+2026-10-15T05:23:37.189963+00:00 lab-agent-1 google_guest_agent[701]: Cloud Logging Client Error: rpc error: code = Unauthenticated desc = transport: per-RPC creds failed due to error: credentials: cannot fetch token: metadata: GCE metadata "instance/service-accounts/default/token?scopes=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Flogging.write" not defined
+install.sh exit=0
+etc sha BEFORE=276208b5cc82863b88d268978865c89dfb2546fde7e3a34cf7b4e36a53681fae
+etc sha AFTER =276208b5cc82863b88d268978865c89dfb2546fde7e3a34cf7b4e36a53681fae
+結論: 重跑 install.sh 未覆寫既有 /etc 設定 → 修正後的值不會自動傳播
+現在 /etc 的 internal 目標:
+[internal]
+dest = 198.51.100.11
+fqdn = www.graid.com
+port = 443
+--- [5] 元件雜湊與版本（可追查基準） ---
+1ef14bf10c3a91434bfe7051031eb07ef9ea13478a17840e4a42d9908345e678  /opt/monitor-agent/monitor_agent.py
+32a8d38d3295c098eff1e8a9702a810a7a8be9fe3bcd69ba869e24900d62cfc9  /etc/systemd/system/monitor-agent.service
+987cd38138479d7dd3840e35c39be70552022b19ae6237c427c4ee6d84c64573  /etc/logrotate.d/monitor-agent
+25:AGENT_VERSION = "1.1.0"
+233:                     version=AGENT_VERSION, cycle_ms=round(max(0.0, cycle_ms), 3), level="ok")
+4:heartbeat_every_cycles = 10
+--- [6] 日誌輪替：強制輪替後下一個完整輪次仍寫入新檔 ---
+輪替前: 2328 行
+logrotate exit=0
+total 516
+drwxr-x--- 2 monitor-agent monitor-agent   4096 Oct 15 05:23 .
+drwxr-xr-x 9 root          root            4096 Oct 15 01:35 ..
+-rw-r----- 1 monitor-agent monitor-agent      0 Oct 15 05:23 agent.jsonl
+-rw-r----- 1 monitor-agent monitor-agent 512573 Oct 15 05:23 agent.jsonl.1
+輪替後新檔行數=0
+等待一個完整輪次（35 秒）...
+2026-10-15T05:23:38.393712+00:00 lab-agent-1 google_metadata_script_runner[858]: Cloud Logging Client Error: rpc error: code = Unauthenticated desc = transport: per-RPC creds failed due to error: credentials: cannot fetch token: metadata: GCE metadata "instance/service-accounts/default/token?scopes=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Flogging.write" not defined
+2026-10-15T05:23:49.777794+00:00 lab-agent-1 systemd[1]: systemd-fsckd.service: Deactivated successfully.
+2026-10-15T05:24:01.607971+00:00 lab-agent-1 systemd[1]: systemd-hostnamed.service: Deactivated successfully.
+2026-10-15T05:24:01.913161+00:00 lab-agent-1 systemd[1]: systemd-timedated.service: Deactivated successfully.
+35 秒後新檔行數=8
+結論: 輪替後持續寫入新檔（無 fd 黑洞）
+--- [7] 契約驗證器（出貨版）對本機日誌 ---
+行數=8 錯誤=0
+總行數=8
+最後 3 筆:
+{"v":1,"ts":"2026-10-15T05:24:07.511+00:00","host":"lab-agent-1","event":"network","target":"internal","dest":"www.graid.com:443","fqdn":"www.graid.com","result":"ok","failure_type":"ok","latency_ms":212.548,"detail":"tcp_connected","level":"ok"}
+{"v":1,"ts":"2026-10-15T05:24:07.516+00:00","host":"lab-agent-1","event":"network","target":"external","dest":"1.1.1.1:443","fqdn":"","result":"ok","failure_type":"ok","latency_ms":4.371,"detail":"tcp_connected","level":"ok"}
+{"v":1,"ts":"2026-10-15T05:24:07.699+00:00","host":"lab-agent-1","event":"network","target":"external","dest":"example.com:443","fqdn":"example.com","result":"ok","failure_type":"ok","latency_ms":182.831,"detail":"tcp_connected","level":"ok"}
+--- [8] 收尾狀態 ---
+NRestarts=0
+MemoryCurrent=10346496
+CPUUsageNSec=763548000
+sha256sum of delivered config in source tree:
+bbd5b7b9c282b410bea76b9bbeaec88378dbb3374f9a074c1565aebef23b2cc1  /root/monitor-agent-src/config/monitor-agent.conf
+##### EVIDENCE PASS DONE boot=<boot-id-1> #####
+2026-10
+
+==================== PASS-2（同日第二輪：沙箱／寫入失敗／設定錯誤／足跡） ====================
+##### EVIDENCE PASS-2 host=lab-agent-1 boot=<boot-id-3> 2026-10-15T05:28:30+00:00 #####
+--- [A] 開機啟動（本輪，無人為介入） ---
+is-enabled=enabled
+is-active=active
+MainPID=432
+NRestarts=0
+ExecMainStartTimestamp=Thu 2026-10-15 05:28:24 UTC
+boot_time=2026-10-15 05:28:13
+--- [B] 沙箱與資源上限：systemd 實際生效值 ---
+Restart=on-failure
+RestartUSec=30s
+RestartPreventExitStatus=2
+CPUQuotaPerSecUSec=500ms
+MemoryMax=100663296
+MemorySwapMax=0
+TasksMax=16
+User=monitor-agent
+Group=monitor-agent
+ReadWritePaths=/var/log/monitor-agent
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectHome=yes
+ProtectSystem=strict
+NoNewPrivileges=yes
+SystemCallFilter=_llseek _newselect accept accept4 access add_key alarm arch_prctl arm_fadvise64_64 bind brk cacheflush capget capset chdir chmod chown chown32 clock_getres clock_getres_time64 clock_gettime clock_gettime64 clock_nanosleep clock_nanosleep_time64 clone clone3 close close_range connect copy_file_range creat dup dup2 dup3 epoll_create epoll_create1 epoll_ctl epoll_ctl_old epoll_pwait epoll_pwait2 epoll_wait epoll_wait_old eventfd eventfd2 execve execveat exit exit_group faccessat faccessat2 fadvise64 fadvise64_64 fallocate fchdir fchmod fchmodat fchmodat2 fchown fchown32 fchownat fcntl fcntl64 fdatasync fgetxattr flistxattr flock fork fremovexattr fsetxattr fstat fstat64 fstatat64 fstatfs fstatfs64 fsync ftruncate ftruncate64 futex futex_time64 futex_waitv futimesat get_mempolicy get_robust_list get_thread_area getcpu getcwd getdents getdents64 getegid getegid32 geteuid geteuid32 getgid getgid32 getgroups getgroups32 getitimer getpeername getpgid getpgrp getpid getppid getpriority getrandom getresgid getresgid32 getresuid getresuid32 getrlimit getrusage getsid getsockname getsockopt gettid gettimeofday getuid getuid32 getxattr inotify_add_watch inotify_init inotify_init1 inotify_rm_watch io_cancel io_destroy io_getevents io_pgetevents io_pgetevents_time64 io_setup io_submit io_uring_enter io_uring_register io_uring_setup ioctl ioprio_get ioprio_set ipc kcmp keyctl kill lchown lchown32 lgetxattr link linkat listen listxattr llistxattr lremovexattr lseek lsetxattr lstat lstat64 madvise mbind membarrier memfd_create migrate_pages mkdir mkdirat mknod mknodat mlock mlock2 mlockall mmap mmap2 move_pages mprotect mq_getsetattr mq_notify mq_open mq_timedreceive mq_timedreceive_time64 mq_timedsend mq_timedsend_time64 mq_unlink mremap msgctl msgget msgrcv msgsnd msync munlock munlockall munmap name_to_handle_at nanosleep newfstatat nice oldfstat oldlstat oldolduname oldstat olduname open openat openat2 pause personality pidfd_open pidfd_send_signal pipe pipe2 poll ppoll ppoll_time64 prctl pread64 preadv preadv2 prlimit64 process_madvise process_vm_readv process_vm_writev pselect6 pselect6_time64 pwrite64 pwritev pwritev2 read readahead readdir readlink readlinkat readv recv recvfrom recvmmsg recvmmsg_time64 recvmsg remap_file_pages removexattr rename renameat renameat2 request_key restart_syscall riscv_flush_icache rmdir rseq rt_sigaction rt_sigpending rt_sigprocmask rt_sigqueueinfo rt_sigreturn rt_sigsuspend rt_sigtimedwait rt_sigtimedwait_time64 rt_tgsigqueueinfo sched_get_priority_max sched_get_priority_min sched_getaffinity sched_getattr sched_getparam sched_getscheduler sched_rr_get_interval sched_rr_get_interval_time64 sched_setaffinity sched_setattr sched_setparam sched_setscheduler sched_yield select semctl semget semop semtimedop semtimedop_time64 send sendfile sendfile64 sendmmsg sendmsg sendto set_mempolicy set_mempolicy_home_node set_robust_list set_thread_area set_tid_address set_tls setfsgid setfsgid32 setfsuid setfsuid32 setgid setgid32 setgroups setgroups32 setitimer setns setpgid setpriority setregid setregid32 setresgid setresgid32 setresuid setresuid32 setreuid setreuid32 setrlimit setsid setsockopt setuid setuid32 setxattr shmat shmctl shmdt shmget shutdown sigaction sigaltstack signal signalfd signalfd4 sigpending sigprocmask sigreturn sigsuspend socket socketcall socketpair splice stat stat64 statfs statfs64 statx swapcontext symlink symlinkat sync sync_file_range sync_file_range2 syncfs sysinfo tee tgkill time timer_create timer_delete timer_getoverrun timer_gettime timer_gettime64 timer_settime timer_settime64 timerfd_create timerfd_gettime timerfd_gettime64 timerfd_settime timerfd_settime64 times tkill truncate truncate64 ugetrlimit umask uname unlink unlinkat unshare userfaultfd utime utimensat utimensat_time64 utimes vfork vmsplice wait4 waitid waitpid write writev
+2026-10-15T05:28:30.988790+00:00 lab-agent-1 google_guest_agent[699]: Interface(lo) - State: {Index:1 MTU:65536 Name:lo HardwareAddr: Flags:up|loopback|running}, Addrs: [127.0.0.1/8 ::1/128]
+2026-10-15T05:28:30.989137+00:00 lab-agent-1 google_guest_agent[699]: Interface(ens4) - State: {Index:2 MTU:1460 Name:ens4 HardwareAddr:42:01:0a:8c:00:15 Flags:up|broadcast|multicast|running}, Addrs: [198.51.100.10/32 2001:db8::10/64]
+RestrictAddressFamilies=AF_INET AF_INET6 AF_NETLINK AF_UNIX
+LogsDirectory=monitor-agent
+2026-10-15T05:28:30.993056+00:00 lab-agent-1 google_guest_agent[699]: Local Routes: local 198.51.100.10 dev ens4 proto kernel scope host src 198.51.100.10 #012local 127.0.0.0/8 dev lo proto kernel scope host src 127.0.0.1 #012local 127.0.0.1 dev lo proto kernel scope host src 127.0.0.1 #012broadcast 127.255.255.255 dev lo proto kernel scope link src 127.0.0.1
+StartLimitIntervalUSec=0
+--- [C] 測試套件（真機） ---
+2026-10-15T05:28:32.691912+00:00 lab-agent-1 mwlid_extension[700]: Cloud Logging Client Error: rpc error: code = Unauthenticated desc = transport: per-RPC creds failed due to error: credentials: cannot fetch token: metadata: GCE metadata "instance/service-accounts/default/token?scopes=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Flogging.write" not defined
+Ran 31 tests in 1.702s
+
+OK
+--- [D] 寫入失敗降級：日誌目錄 chmod 000 ---
+2026-10-15T05:28:33.191515+00:00 lab-agent-1 systemd[1]: Stopping monitor-agent.service - Lightweight Linux resource and TCP monitoring agent...
+2026-10-15T05:28:33.200949+00:00 lab-agent-1 systemd[1]: monitor-agent.service: Deactivated successfully.
+2026-10-15T05:28:33.201081+00:00 lab-agent-1 systemd[1]: Stopped monitor-agent.service - Lightweight Linux resource and TCP monitoring agent.
+2026-10-15T05:28:33.218034+00:00 lab-agent-1 systemd[1]: Started monitor-agent.service - Lightweight Linux resource and TCP monitoring agent.
+2026-10-15T05:28:33.431895+00:00 lab-agent-1 google_guest_agent_manager[404]: Cloud Logging Client Error: rpc error: code = Unauthenticated desc = transport: per-RPC creds failed due to error: credentials: cannot fetch token: metadata: GCE metadata "instance/service-accounts/default/token?scopes=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Flogging.write" not defined
+2026-10-15T05:28:35.165739+00:00 lab-agent-1 google_guest_agent[699]: Cloud Logging Client Error: rpc error: code = Unauthenticated desc = transport: per-RPC creds failed due to error: credentials: cannot fetch token: metadata: GCE metadata "instance/service-accounts/default/token?scopes=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Flogging.write" not defined
+2026-10-15T05:28:35.776025+00:00 lab-agent-1 google_metadata_script_runner[858]: Cloud Logging Client Error: rpc error: code = Unauthenticated desc = transport: per-RPC creds failed due to error: credentials: cannot fetch token: metadata: GCE metadata "instance/service-accounts/default/token?scopes=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Flogging.write" not defined
+2026-10-15T05:28:46.883861+00:00 lab-agent-1 systemd[1]: systemd-fsckd.service: Deactivated successfully.
+state=active NRestarts=0 (before=0)
+journal（最後 6 行）:
+Oct 15 05:23:34 lab-agent-1 systemd[1]: Started monitor-agent.service - Lightweight Linux resource and TCP monitoring agent.
+-- Boot 96d0d61a96d04e96a00e381ae840bfa9 --
+Oct 15 05:28:24 lab-agent-1 systemd[1]: Started monitor-agent.service - Lightweight Linux resource and TCP monitoring agent.
+Oct 15 05:28:33 lab-agent-1 systemd[1]: Stopping monitor-agent.service - Lightweight Linux resource and TCP monitoring agent...
+Oct 15 05:28:33 lab-agent-1 systemd[1]: monitor-agent.service: Deactivated successfully.
+Oct 15 05:28:33 lab-agent-1 systemd[1]: Stopped monitor-agent.service - Lightweight Linux resource and TCP monitoring agent.
+Oct 15 05:28:33 lab-agent-1 systemd[1]: Started monitor-agent.service - Lightweight Linux resource and TCP monitoring agent.
+2026-10-15T05:28:58.441853+00:00 lab-agent-1 systemd[1]: Stopping monitor-agent.service - Lightweight Linux resource and TCP monitoring agent...
+2026-10-15T05:28:58.455433+00:00 lab-agent-1 systemd[1]: monitor-agent.service: Deactivated successfully.
+2026-10-15T05:28:58.455869+00:00 lab-agent-1 systemd[1]: Stopped monitor-agent.service - Lightweight Linux resource and TCP monitoring agent.
+2026-10-15T05:28:58.491047+00:00 lab-agent-1 systemd[1]: Started monitor-agent.service - Lightweight Linux resource and TCP monitoring agent.
+2026-10-15T05:28:59.009588+00:00 lab-agent-1 systemd[1]: systemd-hostnamed.service: Deactivated successfully.
+2026-10-15T05:28:59.284707+00:00 lab-agent-1 systemd[1]: systemd-timedated.service: Deactivated successfully.
+還原後 state=active lines=58
+--- [E] 設定錯誤不重啟轟炸（exit 2） ---
+2026-10-15T05:29:18.527598+00:00 lab-agent-1 systemd[1]: Stopping monitor-agent.service - Lightweight Linux resource and TCP monitoring agent...
+2026-10-15T05:29:18.539525+00:00 lab-agent-1 systemd[1]: monitor-agent.service: Deactivated successfully.
+2026-10-15T05:29:18.539796+00:00 lab-agent-1 systemd[1]: Stopped monitor-agent.service - Lightweight Linux resource and TCP monitoring agent.
+2026-10-15T05:29:18.558397+00:00 lab-agent-1 systemd[1]: Started monitor-agent.service - Lightweight Linux resource and TCP monitoring agent.
+2026-10-15T05:29:18.761020+00:00 lab-agent-1 monitor-agent[941]: monitor-agent: configuration_invalid type=FileNotFoundError
+2026-10-15T05:29:18.826812+00:00 lab-agent-1 systemd[1]: monitor-agent.service: Main process exited, code=exited, status=2/INVALIDARGUMENT
+2026-10-15T05:29:18.827181+00:00 lab-agent-1 systemd[1]: monitor-agent.service: Failed with result 'exit-code'.
+state=failed NRestarts=0
+journal（最後 8 行）:
+Oct 15 05:28:58 lab-agent-1 systemd[1]: Started monitor-agent.service - Lightweight Linux resource and TCP monitoring agent.
+Oct 15 05:29:18 lab-agent-1 systemd[1]: Stopping monitor-agent.service - Lightweight Linux resource and TCP monitoring agent...
+Oct 15 05:29:18 lab-agent-1 systemd[1]: monitor-agent.service: Deactivated successfully.
+Oct 15 05:29:18 lab-agent-1 systemd[1]: Stopped monitor-agent.service - Lightweight Linux resource and TCP monitoring agent.
+Oct 15 05:29:18 lab-agent-1 systemd[1]: Started monitor-agent.service - Lightweight Linux resource and TCP monitoring agent.
+Oct 15 05:29:18 lab-agent-1 monitor-agent[941]: monitor-agent: configuration_invalid type=FileNotFoundError
+Oct 15 05:29:18 lab-agent-1 systemd[1]: monitor-agent.service: Main process exited, code=exited, status=2/INVALIDARGUMENT
+Oct 15 05:29:18 lab-agent-1 systemd[1]: monitor-agent.service: Failed with result 'exit-code'.
+2026-10-15T05:29:53.622539+00:00 lab-agent-1 systemd[1]: Started monitor-agent.service - Lightweight Linux resource and TCP monitoring agent.
+還原後 state=active is-enabled=enabled
+--- [F] 資源足跡（120 秒窗） ---
+window=120s cpu_delta=1.189s avg_cpu=0.991%
+rss before=10330112 after=10346496 delta=+16384 bytes
+tasks=1
+--- [G] 日誌量測與契約 ---
+目前日誌大小: 20K，行數 83
+首行 ts / 末行 ts:
+  2026-10-15T05:23:37.659+00:00
+  2026-10-15T05:31:57.970+00:00
+行數=83 錯誤=0
+resource 週期間隔（秒）:
+  [48.36, 8.76, 26.33, 56.81, 30.0, 30.07, 29.93, 30.0]
+--- [H] 收尾 ---
+NRestarts=0
+MemoryCurrent=10342400
+CPUUsageNSec=1617269000
+##### EVIDENCE PASS-2 DONE boot=<boot-id-3> #
+
+==================== PASS-3（同日第三輪：不重啟服務的 chmod 000，真正重現不可寫） ====================
+##### EVIDENCE PASS-3 host=lab-agent-1 boot=<boot-id-2> 2026-10-15T05:35:03+00:00 #####
+--- [A] 目前目錄模式與擁有者 ---
+drwxr-x--- monitor-agent:monitor-agent /var/log/monitor-agent
+--- [B] 模擬不可寫：chmod 000，且**不重啟服務**（避免 systemd 重套 LogsDirectory 模式） ---
+chmod 前 chmod 值: 750
+chmod 後 chmod 值: 0
+等待 45 秒（>1 個採樣週期）...
+2026-10-15T05:35:04.162002+00:00 lab-agent-1 google_guest_agent[696]: Interface(lo) - State: {Index:1 MTU:65536 Name:lo HardwareAddr: Flags:up|loopback|running}, Addrs: [127.0.0.1/8 ::1/128]
+2026-10-15T05:35:04.162117+00:00 lab-agent-1 google_guest_agent[696]: Interface(ens4) - State: {Index:2 MTU:1460 Name:ens4 HardwareAddr:42:01:0a:8c:00:15 Flags:up|broadcast|multicast|running}, Addrs: [198.51.100.10/32 2001:db8::10/64]
+2026-10-15T05:35:04.165693+00:00 lab-agent-1 google_guest_agent[696]: Local Routes: local 198.51.100.10 dev ens4 proto kernel scope host src 198.51.100.10 #012local 127.0.0.0/8 dev lo proto kernel scope host src 127.0.0.1 #012local 127.0.0.1 dev lo proto kernel scope host src 127.0.0.1 #012broadcast 127.255.255.255 dev lo proto kernel scope link src 127.0.0.1
+2026-10-15T05:35:05.960412+00:00 lab-agent-1 mwlid_extension[695]: Cloud Logging Client Error: rpc error: code = Unauthenticated desc = transport: per-RPC creds failed due to error: credentials: cannot fetch token: metadata: GCE metadata "instance/service-accounts/default/token?scopes=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Flogging.write" not defined
+2026-10-15T05:35:06.573520+00:00 lab-agent-1 google_guest_agent_manager[391]: Cloud Logging Client Error: rpc error: code = Unauthenticated desc = transport: per-RPC creds failed due to error: credentials: cannot fetch token: metadata: GCE metadata "instance/service-accounts/default/token?scopes=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Flogging.write" not defined
+2026-10-15T05:35:08.213002+00:00 lab-agent-1 google_guest_agent[696]: Cloud Logging Client Error: rpc error: code = Unauthenticated desc = transport: per-RPC creds failed due to error: credentials: cannot fetch token: metadata: GCE metadata "instance/service-accounts/default/token?scopes=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Flogging.write" not defined
+2026-10-15T05:35:08.932496+00:00 lab-agent-1 google_metadata_script_runner[857]: Cloud Logging Client Error: rpc error: code = Unauthenticated desc = transport: per-RPC creds failed due to error: credentials: cannot fetch token: metadata: GCE metadata "instance/service-accounts/default/token?scopes=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Flogging.write" not defined
+2026-10-15T05:35:21.339164+00:00 lab-agent-1 systemd[1]: systemd-fsckd.service: Deactivated successfully.
+2026-10-15T05:35:30.768956+00:00 lab-agent-1 monitor-agent[427]: monitor-agent: log_write_failed type=PermissionError
+2026-10-15T05:35:30.770323+00:00 lab-agent-1 monitor-agent[427]: monitor-agent: log_write_failed type=PermissionError
+2026-10-15T05:35:31.068112+00:00 lab-agent-1 monitor-agent[427]: monitor-agent: log_write_failed type=PermissionError
+2026-10-15T05:35:31.072841+00:00 lab-agent-1 monitor-agent[427]: monitor-agent: log_write_failed type=PermissionError
+2026-10-15T05:35:31.295017+00:00 lab-agent-1 monitor-agent[427]: monitor-agent: log_write_failed type=PermissionError
+2026-10-15T05:35:32.178787+00:00 lab-agent-1 systemd[1]: systemd-hostnamed.service: Deactivated successfully.
+2026-10-15T05:35:32.400372+00:00 lab-agent-1 systemd[1]: systemd-timedated.service: Deactivated successfully.
+state=active
+NRestarts=0
+日誌行數 before=114 after=114
+本次開機的代理診斷行（grep log_write_failed）:
+5
+Oct 15 05:35:31 lab-agent-1 monitor-agent[427]: monitor-agent: log_write_failed type=PermissionError
+Oct 15 05:35:31 lab-agent-1 monitor-agent[427]: monitor-agent: log_write_failed type=PermissionError
+Oct 15 05:35:31 lab-agent-1 monitor-agent[427]: monitor-agent: log_write_failed type=PermissionError
+--- [C] 還原並確認恢復寫入 ---
+state=active NRestarts=0
+日誌行數（還原後）=119
+--- [D] 結論用資料 ---
+寫入失敗期間是否靜默丟棄（行數是否停滯）與是否崩潰（state/NRestarts）請對照上方
+##### EVIDENCE PASS-3 DONE boot=<boot-id-2> #

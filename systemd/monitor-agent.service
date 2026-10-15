@@ -1,0 +1,66 @@
+[Unit]
+Description=Lightweight Linux resource and TCP monitoring agent
+Wants=network-online.target
+After=network-online.target network.target
+# 監控代理人不得永久放棄重啟：設定錯誤（exit 2）已由
+# RestartPreventExitStatus 排除，其餘故障應無限次重試而非靜默死亡。
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=monitor-agent
+Group=monitor-agent
+WorkingDirectory=/opt/monitor-agent
+ExecStart=/usr/bin/python3 /opt/monitor-agent/monitor_agent.py --config /etc/monitor-agent/monitor-agent.conf
+Restart=on-failure
+RestartSec=30s
+RestartPreventExitStatus=2
+TimeoutStopSec=15s
+KillMode=control-group
+UMask=0027
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=PYTHONUNBUFFERED=1
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=monitor-agent
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectKernelLogs=true
+ProtectControlGroups=true
+ProtectHostname=true
+ProtectClock=true
+RestrictSUIDSGID=true
+RestrictRealtime=true
+RestrictNamespaces=true
+LockPersonality=true
+MemoryDenyWriteExecute=true
+SystemCallFilter=@system-service
+SystemCallErrorNumber=EPERM
+CapabilityBoundingSet=
+AmbientCapabilities=
+# AF_NETLINK 為 glibc getaddrinfo 位址排序（RFC 3484/6724）所需；移除會使
+# 多位址 FQDN 解析行為異常，不可為了收斂攻擊面而拿掉。
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6 AF_NETLINK
+LogsDirectory=monitor-agent
+LogsDirectoryMode=0750
+ReadWritePaths=/var/log/monitor-agent
+Nice=10
+# 50% 為突發上限，非平均占用：每輪會 spawn 2-3 個 Python 子行程，
+# interpreter 啟動是 CPU 突發；20% 配額會以 100ms 週期 throttle，
+# 低規格主機上可能把 1 秒資源採樣期限撐爆而產生假 error 事件。
+CPUQuota=50%
+MemoryMax=96M
+# 禁止 swap：監控代理人寧可被 OOM kill 後由 Restart 拉起，
+# 也不可因 swap thrashing 造成採樣延遲與假逾時。
+MemorySwapMax=0
+TasksMax=16
+LimitNOFILE=256
+LimitCORE=0
+
+[Install]
+WantedBy=multi-user.target

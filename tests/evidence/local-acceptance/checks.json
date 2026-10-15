@@ -1,0 +1,18 @@
+{
+  "unittest": {
+    "exit_code": 0,
+    "passed": true
+  },
+  "check-config": {
+    "exit_code": 0,
+    "passed": true
+  },
+  "shell-syntax": {
+    "exit_code": 0,
+    "passed": true
+  },
+  "python-syntax": {
+    "passed": true,
+    "files": 3
+  }
+}
